@@ -1,0 +1,165 @@
+
+<html>
+  <head>
+    <title>User Registration Form</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+
+  <body>
+    <script>
+      function checkUserName() {
+        const userName = document.getElementById("userName").value;
+        const msg = document.getElementById("e1");
+
+        msg.innerText = userName === "" ? "Name is required" : "";
+      }
+
+      function checkUserEmail() {
+        const userEmail = document.getElementById("userEmail").value;
+        const msg = document.getElementById("e2");
+
+        if (userEmail === "") {
+          msg.innerText = "Email is required";
+          return;
+        }
+
+        const atIndex = userEmail.indexOf("@");
+        const dotIndex = userEmail.lastIndexOf(".");
+
+        if (atIndex < 1 || dotIndex < atIndex + 2 || dotIndex === userEmail.length - 1) {
+          msg.innerText = "Invalid email format";
+        } else {
+          msg.innerText = "";
+        }
+      }
+
+      function checkPassword() {
+        const pwd = document.getElementById("userPwd").value;
+        const msg = document.getElementById("e3");
+
+        msg.innerText =
+          pwd.length < 8 ? "Password must be at least 8 characters" : "";
+      }
+
+      function matchPasswords() {
+        const pwd1 = document.getElementById("userPwd").value;
+        const pwd2 = document.getElementById("confirmPwd").value;
+        const msg = document.getElementById("e4");
+
+        msg.innerText = pwd1 !== pwd2 ? "Passwords do not match" : "";
+      }
+
+      function checkMobile() {
+        const mobile = document.getElementById("mobile").value;
+        const msg = document.getElementById("e5");
+
+        if (mobile.length !== 10 || isNaN(mobile)) {
+          msg.innerText = "Enter a valid 10-digit number";
+        } else {
+          msg.innerText = "";
+        }
+      }
+
+      function submitData(event) {
+        event.preventDefault();
+
+        checkUserName();
+        checkUserEmail();
+        checkPassword();
+        matchPasswords();
+        checkMobile();
+
+        let valid = true;
+
+        if (!event.target.gender.value) {
+          document.getElementById("e6").innerText = "Select gender";
+          valid = false;
+        } else {
+          document.getElementById("e6").innerText = "";
+        }
+
+        if (!document.getElementById("agree").checked) {
+          document.getElementById("e7").innerText = "Accept terms first";
+          valid = false;
+        } else {
+          document.getElementById("e7").innerText = "";
+        }
+
+        const errors = ["e1", "e2", "e3", "e4", "e5", "e6", "e7"];
+        for (let id of errors) {
+          if (document.getElementById(id).innerText !== "") {
+            valid = false;
+            break;
+          }
+        }
+
+        const finalMsg = document.getElementById("finalMsg");
+
+        if (!valid) {
+          finalMsg.innerText = "Fix errors before submitting";
+          return;
+        }
+
+        finalMsg.innerText = "";
+        alert("Form submitted successfully");
+        event.target.submit();
+      }
+    </script>
+
+    <div class="wrapper">
+      <h3>USER REGISTRATION FORM</h3>
+
+      <form onsubmit="submitData(event)">
+        <label>Name</label>
+        <input class="inputBox" id="userName" onchange="checkUserName()" />
+        <p id="e1"></p>
+
+        <label>Email</label>
+        <input class="inputBox" id="userEmail" onchange="checkUserEmail()" />
+        <p id="e2"></p>
+
+        <label>Password</label>
+        <input
+          type="password"
+          class="inputBox"
+          id="userPwd"
+          onchange="checkPassword()"
+        />
+        <p id="e3"></p>
+
+        <label>Confirm Password</label>
+        <input
+          type="password"
+          class="inputBox"
+          id="confirmPwd"
+          onchange="matchPasswords()"
+        />
+        <p id="e4"></p>
+
+        <label>Phone</label>
+        <input
+          class="inputBox"
+          id="mobile"
+          onchange="checkMobile()"
+        />
+        <p id="e5"></p>
+
+        <div class="radioGroup">
+          <label><input type="radio" name="gender" value="m" /> Male</label>
+          <label><input type="radio" name="gender" value="f" /> Female</label>
+          <p id="e6"></p>
+        </div>
+
+        <div class="termsBox">
+          <input type="checkbox" id="agree" />
+          <label>Terms and Conditions</label>
+        </div>
+        <p id="e7"></p>
+
+        <p id="finalMsg"></p>
+
+        <input type="submit" value="SUBMIT" />
+      </form>
+    </div>
+  </body>
+</html>
